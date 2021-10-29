@@ -3,13 +3,21 @@ from zipfile import ZipFile
 
 
 def crack(args):
-    zipfile = ZipFile(args.file)
-    wordlist_read = open(args.wordlist, 'r')
+    try:
+        zipfile = ZipFile(args.file)
+    except FileNotFoundError:
+        print('Zip file not found.')
+
+    try:
+        wordlist_read = open(args.wordlist, 'r')
+    except FileNotFoundError:
+        print('Wordlist file not found.')
+
     for word in wordlist_read:
         try:
             zipfile.extractall(pwd=word)
             print(f'Zipfile Password is: {word}')
-        except:
+        except RuntimeError:
             pass
 
 
